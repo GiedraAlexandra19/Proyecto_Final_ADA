@@ -66,12 +66,12 @@ void dijkstra( int inicial ){
     }
 
 
-    printf( "Distancias mas cortas iniciando en vertice %d\n" , inicial );
+    printf( "Tiempos mas cortos iniciando en vertice %d\n" , inicial );
     for( int i = 1 ; i <= V ; ++i ){
-        printf("Vertice %d , distancia mas corta = %d\n" , i , distancia[ i ] );
+        printf("Vertice %d , tiempo mas corto = %d minutos \n" , i , distancia[ i ] );
     }
 
-    puts("\n**************Impresion de camino mas corto**************");
+    puts("\n**************Impresion del tiempo mas corto**************");
     printf("Ingrese vertice destino: ");
     int destino;
     scanf("%d" , &destino );
@@ -81,30 +81,30 @@ void dijkstra( int inicial ){
 
 void menu1(){
 
+    FILE *fp;
+    fp = fopen("rutas.txt","r");
+    
 
-    cout<<"_____________CODIGOS POR CIUDAD(ID)_____________"<<endl;
-    cout<<"1    LIMA"<<endl;
-    cout<<"2    AREQUIPA"<<endl;
-    cout<<"3    LA LIBERTAD"<<endl;
-    cout<<"4    PIURA"<<endl;
-    cout<<"5    TACNA"<<endl;
-    cout<<"6    CAJAMARCA"<<endl;
-    cout<<"7    LORETO"<<endl;
-    cout<<"8    SAN MARTIN"<<endl;
-    cout<<"9    MADRE DE DIOS"<<endl;
-    cout<<"10   CUSCO"<<endl;
-    cout<<"11   AYACUCHO"<<endl;
-
+    cout<<"\n\t _____________CODIGOS POR CIUDAD(ID)_____________"<<endl;
+    cout<<"\t 1    LIMA"<<endl;
+    cout<<"\t 2    AREQUIPA"<<endl;
+    cout<<"\t 3    LA LIBERTAD"<<endl;
+    cout<<"\t 4    PIURA"<<endl;
+    cout<<"\t 5    TACNA"<<endl;
+    cout<<"\t 6    CAJAMARCA"<<endl;
+    cout<<"\t 7    LORETO"<<endl;
+    cout<<"\t 8    SAN MARTIN"<<endl;
+    cout<<"\t 9    MADRE DE DIOS"<<endl;
+    cout<<"\t 10   CUSCO"<<endl;
+    cout<<"\t 11   AYACUCHO"<<endl;
     
     int E , origen, destino , peso , inicial;
     
     V=11; //vertices
     E=20;  //aristas
 
-    printf("Ingresar rutas: ");
-
     while( E-- ){  
-    scanf("%d %d %d" , &origen , &destino , &peso );
+    fscanf(fp, "%d %d %d", &origen , &destino , &peso);
     ady[ origen ].push_back( Node( destino , peso ) ); //consideremos grafo dirigido
     ady[ destino ].push_back( Node( origen , peso ) ); //grafo no dirigido
     }
