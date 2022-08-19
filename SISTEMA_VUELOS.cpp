@@ -22,7 +22,7 @@ int main() {
 
         switch (opcion) {
         case '1':
-          //  menu1();
+            menu1();
             break;
         case '2':
             menu2();
