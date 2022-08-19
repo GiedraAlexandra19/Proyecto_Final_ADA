@@ -1,238 +1,115 @@
-#pragma once
+#include <stdio.h>
+#include <vector>
+#include <queue>
 #include <iostream>
-#include <conio.h>
-#include <stdlib.h>
-
 using namespace std;
+#define MAX 10005 //maximo numero de vértices
+#define Node pair< int , int > //definimos el nodo como un par( first , second ) donde first es el vertice adyacente y second el peso de la arista
+#define INF 1<<30 //definimos un valor grande que represente la distancia infinita inicial, basta conque sea superior al maximo valor del peso en alguna de las aristas
 
-void menu2() {
+struct cmp {
+    bool operator() ( const Node &a , const Node &b ) {
+        return a.second > b.second;
+    }
+};
+vector< Node > ady[ MAX ]; //lista de adyacencia
+int distancia[ MAX ];      //distancia[ u ] distancia de vértice inicial a vértice con ID = u
+bool visitado[ MAX ];      //para vértices visitados
+priority_queue< Node , vector<Node> , cmp > Q; //priority queue propia del c++, usamos el comparador definido para que el de menor valor este en el tope
+int V;                     //numero de vertices
+int previo[ MAX ];         //para la impresion de caminos
 
-    int av = 0, c = 0, asiento = 0, m = 0, av1[49], av2[49], av3[49], i;
-    char opcion;
-    for (i = 0; i < 49; i++)  av1[i] = 0;
-    for (i = 0; i < 49; i++)  av2[i] = 0;
-    for (i = 0; i < 49; i++)  av3[i] = 0;
-
-
-    getch();
-    do {
-        system("cls");
-        cout << "\n\n\t\t*******************BIENVENIDO AL SISTEMA DE RESERVA DE VUELOS**********************";
-        cout << "\n\n\t\t -------------------------MENU DE OPCIONES-------------------------------\n";
-        cout << "\n\n\t Seleccione Una Opcion Del Menu\n";
-        cout << "\n\t 1. Reservar\n";
-        cout << "\n\t 2. Confirmar Reserva\n";
-        cout << "\n\t 3. Cancelar Reserva\n";
-        cout << "\n\t 4. Estado del Avion\n";
-        cout << "\n\t 5. Salir\n";
-        cout << "\n\t Introduzca el Numero de la Opcion:";
-        cin >> opcion;
-
-        switch (opcion) {
-        case '1':
-            cout << "\n\n\t Desea Vijar En:""\n\t"" Avion 1""\n\t"" Avion 2""\n\t"" Avion 3""\n\t"" Elija el Avion Deseado: ";
-            cin >> av;
-            cout << "\n\n\t En que Clase Desea Viajar: ""\n\t"" 1-Primera Clase""\n\t"" 2-Segunda Clase\n\t"" Elija la clase: ";
-            cin >> c;
-
-            if (c == 1) {
-                do {
-                    cout << "\n\n\t Intodusca Un Numero De Asiento Entre 0 y 14: "; cin >> asiento;
-                    if ((asiento < 0) || (asiento > 14))
-                        cout << "\n\t Asiento No Valido....";
-                } while ((asiento < 0) || (asiento > 14));
-            }
-
-            else {
-                cout << "\n\t Elija Un Asiento Entre 15 y 49:";
-                do {
-                    cout << "\n\n\t Introduzca el numero de asiento: ";
-                    cin >> asiento;
-                    if ((asiento < 15) || (asiento > 49))
-                        cout << "\n\n\t Asiento No Valido....";
-                } while ((asiento < 15) || (asiento > 49));
-            }
-            if (av == 1) {
-                if (av1[asiento] == 0) {
-                    av1[asiento] = 1;
-                    cout << "\n\t Su operacion se realizo con exito...";
-                }
-                else  cout << "\n\t El Asiento No Esta Disponible....";
-            }
-            if (av == 2) {
-                if (av2[av == 2] == 0) {
-                    av2[asiento] = 1;
-                    cout << "\n\t Su operacion se realizo con exito...";
-                }
-                else cout << "\n\t El Asiento No Esta Disponible....";
-            }
-            if (av == 3) {
-                if (av3[av == 3] == 0) {
-                    av3[asiento] = 1;
-                    cout << "\n\t Su operacion se realizo con exito...";
-                }
-                else  cout << "\n\t El Asiento No Esta Disponible....";
-            }
-
-            break;
-
-        case '2':
-            cout << "\n\t Para Confirmar Su Reserva:""\n""Ingrese El Numero De Avion En Que Reservo:";
-            cin >> av;
-            cout << "\n\t Ingrese El Numero De Asiento:";
-            cin >> asiento;
-
-            if (av == 1) {
-                if (av1[asiento] == 1) {
-                    av1[asiento] = 2;
-                    cout << "\n\t Su confirmacion se realizo con exito...";
-                }
-                else
-                    cout << "\n\t El Asiento No Ha Sido Reservado Aun Por Favor Reservelo Antes....";
-            }
-
-            if (av == 2) {
-                if (av2[av == 2] == 1) {
-                    av2[asiento] = 2;
-                    cout << "\n\t Su confirmacion se realizo con exito...";
-                }
-                else
-                    cout << "\n\t El Asiento No Ha Sido Reservado Aun por Favor Reservelo Antes....";
-            }
-
-            if (av == 3) {
-                if (av3[av == 3] == 1) {
-                    av3[asiento] = 2;
-                    cout << "\n\t Su confirmacion se realizo con exito...";
-                }
-                else
-                    cout << "\n\t El Asiento No Ha Sido Reservado Aun por Favor Reservelo Antes....";
-            }
-
-            break;
-
-        case '3':
-            cout << "\n\t Para Cancelar Su Reserva:""\n""Ingrese El Numero De Avion En Que Reservo:";
-            cin >> av;
-            cout << "\n\t Ingrese El Numero De Asiento:";
-            cin >> asiento;
-
-            if (av == 1) {
-                if (av1[asiento] == 0)
-                    cout << "\n\t El Asiento No Ha Sido Reservado Aun Por Favor Reservelo Antes....";
-                {if (av1[asiento] == 2)
-                    cout << "\n\t El Asiento Ya No Se Puede Cancelar Gracias....";
-                else {
-                    if (av1[asiento] == 1)
-                        av1[asiento] = 0;
-                    cout << "\n\t Su Reserva Ha Sido Cancelada.";
-                }
-                }
-            }
-
-            if (av == 2) {
-                if (av2[av == 2] == 2)
-                    av2[asiento] = 0;
-                else
-                    cout << "\n\t El Asiento Ya No Se Puede Cancelar Gracias....";
-            }
-
-            if (av == 3) {
-                if (av3[av == 3] == 2)
-                    av3[asiento] = 0;
-                else
-                    cout << "\n\t El Asiento Ya No Se Puede Cancelar Gracias....";
-            }
-
-            break;
-
-        case '4':
-            cout << "\n\t Que avion Desea Verificar Avion 1, Avion 2 o Avion 3:";
-            cin >> av;
-            cout << "\n\t Que Desea Veriaficar:""\n\t"" 1-Reservas""\n\t"" 2-Reservas Confirmadas""\n\t"" 3-Asientos Vacios""\n\t"" Elija La Opcion a Verificar: ";
-            cin >> m;
-
-            if ((av == 1) && (m == 1)) {
-                cout << "\n\t Los Asientos Reservados Son: \n";
-                for (i = 0; i <= 49; i++) {
-                    if (av1[i] == 1)
-                        cout << i << "-";
-                }
-            }
-            else
-                if ((av == 1) && (m == 2)) {
-                    cout << "\n\t Los Asientos Confirmados Son: \n";
-                    for (i = 0; i <= 49; i++) {
-                        if (av1[i] == 2)
-                            cout << i << "-";
-                    }
-                }
-                else
-                    if ((av == 1) && (m == 3)) {
-                        cout << "\n\t Los Asientos Vacios Son: \n";
-                        for (i = 0; i <= 49; i++) {
-                            if (av1[i] == 0)
-                                cout << i << "-";
-                        }
-                    }
-            if ((av == 2) && (m == 1)) {
-                cout << "\n\t Los Asientos Reservados Son: \n";
-                for (i = 0; i <= 49; i++) {
-                    if (av2[i] == 1)
-                        cout << i << "-";
-                }
-            }
-            else
-                if ((av == 2) && (m == 2)) {
-                    cout << "\n\t Los Asientos Confirmados Son: \n";
-                    for (i = 0; i <= 49; i++) {
-                        if (av2[i] == 2)
-                            cout << i << "-";
-                    }
-                }
-                else
-                    if ((av == 2) && (m == 3)) {
-                        cout << "\n\t Los Asientos Vacios Son: \n";
-                        for (i = 0; i <= 49; i++) {
-                            if (av2[i] == 0)
-                                cout << i << "-";
-                        }
-                    }
-
-            if ((av == 3) && (m == 1)) {
-                cout << "\n\t Los Asientos Reservados Son: \n";
-                for (i = 0; i <= 49; i++) {
-                    if (av3[i] == 1)
-                        cout << i << "-";
-                }
-            }
-            else
-                if ((av == 3) && (m == 2)) {
-                    cout << "\n\t Los Asientos Confirmados Son: \n";
-                    for (i = 0; i <= 49; i++) {
-                        if (av3[i] == 2)
-                            cout << i << "-";
-                    }
-                }
-                else
-                    if ((av == 3) && (m == 3)) {
-                        cout << "\n\t Los Asientos Vacios Son: \n";
-                        for (i = 0; i <= 49; i++) {
-                            if (av3[i] == 0)
-                                cout << i << "-";
-                        }
-                    }
-            break;
-
-        case '5':
-            break;
-        default:
-            cout << "\n  ";
-        }
-        getch();
-
-    } while (opcion != '5');
-    cout << "\n\t Ha Decidido Salir Del Menu...";
-    getch();
+//función de inicialización
+void init(){
+    for( int i = 0 ; i <= V ; ++i ){
+        distancia[ i ] = INF;  //inicializamos todas las distancias con valor infinito
+        visitado[ i ] = false; //inicializamos todos los vértices como no visitados
+        previo[ i ] = -1;      //inicializamos el previo del vertice i con -1
+    }
 }
 
+//Paso de relajacion
+void relajacion( int actual , int adyacente , int peso ){
+    //Si la distancia del origen al vertice actual + peso de su arista es menor a la distancia del origen al vertice adyacente
+    if( distancia[ actual ] + peso < distancia[ adyacente ] ){
+        distancia[ adyacente ] = distancia[ actual ] + peso;  //relajamos el vertice actualizando la distancia
+        previo[ adyacente ] = actual;                         //a su vez actualizamos el vertice previo
+        Q.push( Node( adyacente , distancia[ adyacente ] ) ); //agregamos adyacente a la cola de prioridad
+    }
+}
+
+//Impresion del camino mas corto desde el vertice inicial y final ingresados
+void print( int destino ){
+    if( previo[ destino ] != -1 )    //si aun poseo un vertice previo
+        print( previo[ destino ] );  //recursivamente sigo explorando
+    printf("%d " , destino );        //terminada la recursion imprimo los vertices recorridos
+}
+
+void dijkstra( int inicial ){
+    init(); //inicializamos nuestros arreglos
+    Q.push( Node( inicial , 0 ) ); //Insertamos el vértice inicial en la Cola de Prioridad
+    distancia[ inicial ] = 0;      //Este paso es importante, inicializamos la distancia del inicial como 0
+    int actual , adyacente , peso;
+    while( !Q.empty() ){                   //Mientras cola no este vacia
+        actual = Q.top().first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
+        Q.pop();                           //Sacamos el elemento de la cola
+        if( visitado[ actual ] ) continue; //Si el vértice actual ya fue visitado entonces sigo sacando elementos de la cola
+        visitado[ actual ] = true;         //Marco como visitado el vértice actual
+
+        for( int i = 0 ; i < ady[ actual ].size() ; ++i ){ //reviso sus adyacentes del vertice actual
+            adyacente = ady[ actual ][ i ].first;   //id del vertice adyacente
+            peso = ady[ actual ][ i ].second;        //peso de la arista que une actual con adyacente ( actual , adyacente )
+            if( !visitado[ adyacente ] ){        //si el vertice adyacente no fue visitado
+                relajacion( actual , adyacente , peso ); //realizamos el paso de relajacion
+            }
+        }
+    }
+
+
+    printf( "Distancias mas cortas iniciando en vertice %d\n" , inicial );
+    for( int i = 1 ; i <= V ; ++i ){
+        printf("Vertice %d , distancia mas corta = %d minutos \n" , i , distancia[ i ] );
+    }
+
+    puts("\n**************Impresion de camino mas corto**************");
+    printf("Ingrese vertice destino: ");
+    int destino;
+    scanf("%d" , &destino );
+    print( destino );
+    printf("\n");
+}
+
+void menu1(){
+
+    FILE *fp;
+    fp = fopen("rutas.txt","r");
+    
+
+    cout<<"_____________CODIGOS POR CIUDAD(ID)_____________"<<endl;
+    cout<<"1    LIMA"<<endl;
+    cout<<"2    AREQUIPA"<<endl;
+    cout<<"3    LA LIBERTAD"<<endl;
+    cout<<"5    TACNA"<<endl;
+    cout<<"6    CAJAMARCA"<<endl;
+    cout<<"7    LORETO"<<endl;
+    cout<<"8    SAN MARTIN"<<endl;
+    cout<<"9    MADRE DE DIOS"<<endl;
+    cout<<"10   CUSCO"<<endl;
+    cout<<"11   AYACUCHO"<<endl;
+
+    
+    int E , origen, destino , peso , inicial;
+    
+    V=11; //vertices
+    E=20;  //aristas
+
+    while( E-- ){  
+    fscanf(fp, "%d %d %d", &origen , &destino , &peso);
+    ady[ origen ].push_back( Node( destino , peso ) ); //consideremos grafo dirigido
+    ady[ destino ].push_back( Node( origen , peso ) ); //grafo no dirigido
+    }
+    printf("Ingrese el ID de la ciudad inicial: ");
+    scanf("%d" , &inicial );
+    dijkstra( inicial );
+
+}
