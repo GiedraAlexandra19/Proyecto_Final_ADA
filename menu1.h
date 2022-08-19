@@ -86,6 +86,7 @@ void menu1(){
     cout<<"1    LIMA"<<endl;
     cout<<"2    AREQUIPA"<<endl;
     cout<<"3    LA LIBERTAD"<<endl;
+    cout<<"4    PIURA"<<endl;
     cout<<"5    TACNA"<<endl;
     cout<<"6    CAJAMARCA"<<endl;
     cout<<"7    LORETO"<<endl;
